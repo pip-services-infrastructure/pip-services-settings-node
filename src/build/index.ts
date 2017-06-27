@@ -1,0 +1,1 @@
+export { SettingsServiceFactory } from './SettingsServiceFactory';
