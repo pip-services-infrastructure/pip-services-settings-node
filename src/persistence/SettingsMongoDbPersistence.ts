@@ -21,18 +21,68 @@ export class SettingsMongoDbPersistence
         super('settings', SettingsMongoDbSchema());
     }
 
+    private static mapToPublic(map: any) {
+        if (map == null) return null;
+
+        for (let field in map) {
+            if (map.hasOwnProperty(field) && field.indexOf('_dot_') >= 0) {
+                let value = map[field];
+                field = field.replace('_dot_', '.');
+                map[field] = value;
+            }
+        }
+
+        return map;
+    }
+
+    private static fieldFromPublic(field: string): string {
+        if (field == null) return null;
+        field = field.replace('.', '_dot_');
+        return field;
+    }
+
+    private static mapFromPublic(map: any) {
+        if (map == null) return null;
+
+        for (let field in map) {
+            if (map.hasOwnProperty(field) && field.indexOf('.') >= 0) {
+                let value = map[field];
+                field = field.replace('.', '_dot_');
+                map[field] = value;
+            }
+        }
+
+        return map;
+    }
+
     // Convert object to JSON format
     protected convertToPublic(value: any): any {
         if (value == null) return null;
 
+        let parameters = SettingsMongoDbPersistence.mapToPublic(value.parameters);
+        parameters = ConfigParams.fromValue(parameters);
+
         value = {
             id: value._id,
-            parameters: ConfigParams.fromValue(value.parameters),
+            parameters: parameters,
             update_time: value.update_time
         };
 
         return value;
     }    
+
+    protected convertFromPublic(value: any): any {
+        if (value == null) return null;
+        
+        let parameters = SettingsMongoDbPersistence.mapFromPublic(value.parameters);
+        value = {
+            _id: value.id,
+            parameters: parameters,
+            update_time: value.update_time
+        };
+
+        return value;
+    }
 
     private composeFilter(filter: FilterParams): any {
         filter = filter || new FilterParams();
@@ -62,7 +112,6 @@ export class SettingsMongoDbPersistence
         super.getPageByFilter(correlationId, this.composeFilter(filter), paging, '-time', null, callback);
     }
 
-
     public set(correlationId: string, item: SettingsSectionV1,
         callback?: (err: any, item: SettingsSectionV1) => void): void {
 
@@ -71,9 +120,12 @@ export class SettingsMongoDbPersistence
             return;
         }
 
+        let parameters = item.parameters.getAsObject();
+        parameters = SettingsMongoDbPersistence.mapFromPublic(parameters);
+
         let partial: any = {
            $set: { 
-               parameters: item.parameters.getAsObject()
+               parameters: parameters
            },
            update_time: new Date()
         }
@@ -106,7 +158,8 @@ export class SettingsMongoDbPersistence
             for (let key in updateParams) {
                 if (updateParams.hasOwnProperty(key)) {
                     partial.$set = partial.$set || {};
-                    partial.$set['parameters.' + key] = updateParams[key];
+                    let field = 'parameters.' + SettingsMongoDbPersistence.fieldFromPublic(key);
+                    partial.$set[field] = updateParams[key];
                 }
             }
         }
@@ -117,7 +170,8 @@ export class SettingsMongoDbPersistence
                 if (incrementParams.hasOwnProperty(key)) {
                     partial.$inc = partial.$inc || {};
                     let increment = incrementParams.getAsLongWithDefault(key, 0);
-                    partial.$inc['parameters.' + key] = increment;
+                    let field = 'parameters.' + SettingsMongoDbPersistence.fieldFromPublic(key);
+                    partial.$inc[field] = increment;
                 }
             }
         }

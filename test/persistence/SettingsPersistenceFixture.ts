@@ -143,7 +143,24 @@ export class SettingsPersistenceFixture {
                         callback();
                     }
                 );
-            }
+            },
+            (callback) => {
+                this._persistence.modify(
+                    null, 
+                    'test.1', 
+                    ConfigParams.fromTuples('key1.key11', 'value11a'), 
+                    null,
+                    (err, settings) => {
+                        assert.isNull(err);
+                        
+                        assert.isObject(settings);
+                        assert.equal('test.1', settings.id);
+                        assert.equal('value11a', settings.parameters.getAsString('key1.key11'));
+
+                        callback();
+                    }
+                )
+            },
         ], done);
     }
 

@@ -10,13 +10,56 @@ class SettingsMongoDbPersistence extends pip_services_data_node_1.IdentifiableMo
     constructor() {
         super('settings', SettingsMongoDbSchema_1.SettingsMongoDbSchema());
     }
+    static mapToPublic(map) {
+        if (map == null)
+            return null;
+        for (let field in map) {
+            if (map.hasOwnProperty(field) && field.indexOf('_dot_') >= 0) {
+                let value = map[field];
+                field = field.replace('_dot_', '.');
+                map[field] = value;
+            }
+        }
+        return map;
+    }
+    static fieldFromPublic(field) {
+        if (field == null)
+            return null;
+        field = field.replace('.', '_dot_');
+        return field;
+    }
+    static mapFromPublic(map) {
+        if (map == null)
+            return null;
+        for (let field in map) {
+            if (map.hasOwnProperty(field) && field.indexOf('.') >= 0) {
+                let value = map[field];
+                field = field.replace('.', '_dot_');
+                map[field] = value;
+            }
+        }
+        return map;
+    }
     // Convert object to JSON format
     convertToPublic(value) {
         if (value == null)
             return null;
+        let parameters = SettingsMongoDbPersistence.mapToPublic(value.parameters);
+        parameters = pip_services_commons_node_1.ConfigParams.fromValue(parameters);
         value = {
             id: value._id,
-            parameters: pip_services_commons_node_1.ConfigParams.fromValue(value.parameters),
+            parameters: parameters,
+            update_time: value.update_time
+        };
+        return value;
+    }
+    convertFromPublic(value) {
+        if (value == null)
+            return null;
+        let parameters = SettingsMongoDbPersistence.mapFromPublic(value.parameters);
+        value = {
+            _id: value.id,
+            parameters: parameters,
             update_time: value.update_time
         };
         return value;
@@ -48,9 +91,11 @@ class SettingsMongoDbPersistence extends pip_services_data_node_1.IdentifiableMo
                 callback(null, null);
             return;
         }
+        let parameters = item.parameters.getAsObject();
+        parameters = SettingsMongoDbPersistence.mapFromPublic(parameters);
         let partial = {
             $set: {
-                parameters: item.parameters.getAsObject()
+                parameters: parameters
             },
             update_time: new Date()
         };
@@ -72,7 +117,8 @@ class SettingsMongoDbPersistence extends pip_services_data_node_1.IdentifiableMo
             for (let key in updateParams) {
                 if (updateParams.hasOwnProperty(key)) {
                     partial.$set = partial.$set || {};
-                    partial.$set['parameters.' + key] = updateParams[key];
+                    let field = 'parameters.' + SettingsMongoDbPersistence.fieldFromPublic(key);
+                    partial.$set[field] = updateParams[key];
                 }
             }
         }
@@ -82,7 +128,8 @@ class SettingsMongoDbPersistence extends pip_services_data_node_1.IdentifiableMo
                 if (incrementParams.hasOwnProperty(key)) {
                     partial.$inc = partial.$inc || {};
                     let increment = incrementParams.getAsLongWithDefault(key, 0);
-                    partial.$inc['parameters.' + key] = increment;
+                    let field = 'parameters.' + SettingsMongoDbPersistence.fieldFromPublic(key);
+                    partial.$inc[field] = increment;
                 }
             }
         }
