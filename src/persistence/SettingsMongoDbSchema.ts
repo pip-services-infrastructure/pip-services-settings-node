@@ -6,7 +6,7 @@ export let SettingsMongoDbSchema = function(collection?: string) {
 
     let schema = new Schema(
         {
-            _id: { type: String, unique: true },
+            _id: { type: String },
             update_time: { type: Date, required: true, 'default': Date.now },
             parameters: { type: Mixed, required: false }
         },

@@ -5,7 +5,7 @@ let Mixed = mongoose_1.Schema.Types.Mixed;
 exports.SettingsMongoDbSchema = function (collection) {
     collection = collection || 'settings';
     let schema = new mongoose_1.Schema({
-        _id: { type: String, unique: true },
+        _id: { type: String },
         update_time: { type: Date, required: true, 'default': Date.now },
         parameters: { type: Mixed, required: false }
     }, {
