@@ -4,7 +4,7 @@ Configuration structure used by this module follows the
 [standard configuration](https://github.com/pip-services/pip-services/blob/master/usage/Configuration.md) 
 structure.
 
-Example **config.yaml** file:
+Example **config.yml** file:
 
 ```yaml
 - descriptor: "pip-services-container:container-info:default:default:1.0"
