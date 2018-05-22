@@ -55,7 +55,7 @@ suite('SettingsHttpServiceV1', ()=> {
         async.series([
         // Create one section
             (callback) => {
-                rest.post('/settings/set_section',
+                rest.post('/v1/settings/set_section',
                     {
                         id: 'test.1',
                         parameters: ConfigParams.fromTuples(
@@ -75,7 +75,7 @@ suite('SettingsHttpServiceV1', ()=> {
             },
         // Create another section
             (callback) => {
-                rest.post('/settings/modify_section',
+                rest.post('/v1/settings/modify_section',
                     {
                         id: 'test.2',
                         update_params: ConfigParams.fromTuples(
@@ -98,7 +98,7 @@ suite('SettingsHttpServiceV1', ()=> {
             },
         // Get second section
             (callback) => {
-                rest.post('/settings/get_section_by_id',
+                rest.post('/v1/settings/get_section_by_id',
                     {
                         id: 'test.2'
                     },
@@ -115,7 +115,7 @@ suite('SettingsHttpServiceV1', ()=> {
             },
         // Get all sections
             (callback) => {
-                rest.post('/settings/get_sections',
+                rest.post('/v1/settings/get_sections',
                     null,
                     (err, req, res, page) => {
                         assert.isNull(err);
@@ -129,7 +129,7 @@ suite('SettingsHttpServiceV1', ()=> {
             },
         // Get all section ids
             (callback) => {
-                rest.post('/settings/get_section_ids',
+                rest.post('/v1/settings/get_section_ids',
                     null,
                     (err, req, res, page) => {
                         assert.isNull(err);
