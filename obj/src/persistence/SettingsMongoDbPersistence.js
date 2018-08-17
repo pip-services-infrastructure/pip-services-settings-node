@@ -4,9 +4,9 @@ let _ = require('lodash');
 let os = require('os');
 const pip_services_commons_node_1 = require("pip-services-commons-node");
 const pip_services_commons_node_2 = require("pip-services-commons-node");
-const pip_services_data_node_1 = require("pip-services-data-node");
+const pip_services_mongodb_node_1 = require("pip-services-mongodb-node");
 const SettingsMongoDbSchema_1 = require("./SettingsMongoDbSchema");
-class SettingsMongoDbPersistence extends pip_services_data_node_1.IdentifiableMongoDbPersistence {
+class SettingsMongoDbPersistence extends pip_services_mongodb_node_1.IdentifiableMongoDbPersistence {
     constructor() {
         super('settings', SettingsMongoDbSchema_1.SettingsMongoDbSchema());
     }

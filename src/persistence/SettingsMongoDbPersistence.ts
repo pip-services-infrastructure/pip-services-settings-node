@@ -7,7 +7,7 @@ import { PagingParams } from 'pip-services-commons-node';
 import { DataPage } from 'pip-services-commons-node';
 import { StringConverter } from 'pip-services-commons-node';
 
-import { IdentifiableMongoDbPersistence } from 'pip-services-data-node';
+import { IdentifiableMongoDbPersistence } from 'pip-services-mongodb-node';
 
 import { SettingsSectionV1 } from '../data/version1/SettingsSectionV1';
 import { ISettingsPersistence } from './ISettingsPersistence';

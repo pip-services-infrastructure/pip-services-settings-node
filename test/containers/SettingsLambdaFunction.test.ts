@@ -5,7 +5,7 @@ let assert = require('chai').assert;
 import { Descriptor } from 'pip-services-commons-node';
 import { ConfigParams } from 'pip-services-commons-node';
 import { References } from 'pip-services-commons-node';
-import { ConsoleLogger } from 'pip-services-commons-node';
+import { ConsoleLogger } from 'pip-services-components-node';
 
 import { SettingsSectionV1 } from '../../src/data/version1/SettingsSectionV1';
 import { SettingsMemoryPersistence } from '../../src/persistence/SettingsMemoryPersistence';
@@ -17,7 +17,7 @@ suite('SettingsLambdaFunction', ()=> {
 
     suiteSetup((done) => {
         let config = ConfigParams.fromTuples(
-            'logger.descriptor', 'pip-services-commons:logger:console:default:1.0',
+            'logger.descriptor', 'pip-services:logger:console:default:1.0',
             'persistence.descriptor', 'pip-services-settings:persistence:memory:default:1.0',
             'controller.descriptor', 'pip-services-settings:controller:default:default:1.0'
         );
