@@ -1,9 +1,9 @@
-import { ConfigParams } from 'pip-services-commons-node';
-import { FilterParams } from 'pip-services-commons-node';
-import { PagingParams } from 'pip-services-commons-node';
-import { DataPage } from 'pip-services-commons-node';
-import { IGetter } from 'pip-services-data-node';
-import { ISetter } from 'pip-services-data-node';
+import { ConfigParams } from 'pip-services3-commons-node';
+import { FilterParams } from 'pip-services3-commons-node';
+import { PagingParams } from 'pip-services3-commons-node';
+import { DataPage } from 'pip-services3-commons-node';
+import { IGetter } from 'pip-services3-data-node';
+import { ISetter } from 'pip-services3-data-node';
 import { SettingsSectionV1 } from '../data/version1/SettingsSectionV1';
 export interface ISettingsPersistence extends IGetter<SettingsSectionV1, string>, ISetter<SettingsSectionV1> {
     getPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams, callback: (err: any, page: DataPage<SettingsSectionV1>) => void): void;

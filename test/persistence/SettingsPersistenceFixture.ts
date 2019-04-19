@@ -1,8 +1,8 @@
 let async = require('async');
 let assert = require('chai').assert;
 
-import { ConfigParams } from 'pip-services-commons-node';
-import { FilterParams } from 'pip-services-commons-node';
+import { ConfigParams } from 'pip-services3-commons-node';
+import { FilterParams } from 'pip-services3-commons-node';
 
 import { SettingsSectionV1 } from '../../src/data/version1/SettingsSectionV1';
 import { ISettingsPersistence } from '../../src/persistence/ISettingsPersistence';

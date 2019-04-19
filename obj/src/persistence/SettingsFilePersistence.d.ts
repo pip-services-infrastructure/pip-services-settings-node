@@ -1,5 +1,5 @@
-import { ConfigParams } from 'pip-services-commons-node';
-import { JsonFilePersister } from 'pip-services-data-node';
+import { ConfigParams } from 'pip-services3-commons-node';
+import { JsonFilePersister } from 'pip-services3-data-node';
 import { SettingsMemoryPersistence } from './SettingsMemoryPersistence';
 import { SettingsSectionV1 } from '../data/version1/SettingsSectionV1';
 export declare class SettingsFilePersistence extends SettingsMemoryPersistence {

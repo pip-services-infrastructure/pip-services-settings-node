@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 let _ = require('lodash');
 let os = require('os');
-const pip_services_commons_node_1 = require("pip-services-commons-node");
-const pip_services_commons_node_2 = require("pip-services-commons-node");
-const pip_services_mongodb_node_1 = require("pip-services-mongodb-node");
+const pip_services3_commons_node_1 = require("pip-services3-commons-node");
+const pip_services3_commons_node_2 = require("pip-services3-commons-node");
+const pip_services3_mongodb_node_1 = require("pip-services3-mongodb-node");
 const SettingsMongoDbSchema_1 = require("./SettingsMongoDbSchema");
-class SettingsMongoDbPersistence extends pip_services_mongodb_node_1.IdentifiableMongoDbPersistence {
+class SettingsMongoDbPersistence extends pip_services3_mongodb_node_1.IdentifiableMongoDbPersistence {
     constructor() {
         super('settings', SettingsMongoDbSchema_1.SettingsMongoDbSchema());
     }
@@ -45,7 +45,7 @@ class SettingsMongoDbPersistence extends pip_services_mongodb_node_1.Identifiabl
         if (value == null)
             return null;
         let parameters = SettingsMongoDbPersistence.mapToPublic(value.parameters);
-        parameters = pip_services_commons_node_1.ConfigParams.fromValue(parameters);
+        parameters = pip_services3_commons_node_1.ConfigParams.fromValue(parameters);
         value = {
             id: value._id,
             parameters: parameters,
@@ -65,7 +65,7 @@ class SettingsMongoDbPersistence extends pip_services_mongodb_node_1.Identifiabl
         return value;
     }
     composeFilter(filter) {
-        filter = filter || new pip_services_commons_node_2.FilterParams();
+        filter = filter || new pip_services3_commons_node_2.FilterParams();
         let criteria = [];
         let search = filter.getAsNullableString('search');
         if (search != null) {

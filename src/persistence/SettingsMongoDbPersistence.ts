@@ -1,13 +1,13 @@
 let _ = require('lodash');
 let os = require('os');
 
-import { ConfigParams } from 'pip-services-commons-node';
-import { FilterParams } from 'pip-services-commons-node';
-import { PagingParams } from 'pip-services-commons-node';
-import { DataPage } from 'pip-services-commons-node';
-import { StringConverter } from 'pip-services-commons-node';
+import { ConfigParams } from 'pip-services3-commons-node';
+import { FilterParams } from 'pip-services3-commons-node';
+import { PagingParams } from 'pip-services3-commons-node';
+import { DataPage } from 'pip-services3-commons-node';
+import { StringConverter } from 'pip-services3-commons-node';
 
-import { IdentifiableMongoDbPersistence } from 'pip-services-mongodb-node';
+import { IdentifiableMongoDbPersistence } from 'pip-services3-mongodb-node';
 
 import { SettingsSectionV1 } from '../data/version1/SettingsSectionV1';
 import { ISettingsPersistence } from './ISettingsPersistence';

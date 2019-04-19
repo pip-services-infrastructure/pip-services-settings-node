@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 let _ = require('lodash');
-const pip_services_commons_node_1 = require("pip-services-commons-node");
-const pip_services_data_node_1 = require("pip-services-data-node");
+const pip_services3_commons_node_1 = require("pip-services3-commons-node");
+const pip_services3_data_node_1 = require("pip-services3-data-node");
 const SettingsSectionV1_1 = require("../data/version1/SettingsSectionV1");
-class SettingsMemoryPersistence extends pip_services_data_node_1.IdentifiableMemoryPersistence {
+class SettingsMemoryPersistence extends pip_services3_data_node_1.IdentifiableMemoryPersistence {
     constructor() {
         super();
     }
@@ -16,7 +16,7 @@ class SettingsMemoryPersistence extends pip_services_data_node_1.IdentifiableMem
         return value.toLowerCase().indexOf(search) >= 0;
     }
     composeFilter(filter) {
-        filter = filter || new pip_services_commons_node_1.FilterParams();
+        filter = filter || new pip_services3_commons_node_1.FilterParams();
         let search = filter.getAsNullableString('search');
         let id = filter.getAsNullableString('id');
         let idStarts = filter.getAsNullableString('id_starts');
