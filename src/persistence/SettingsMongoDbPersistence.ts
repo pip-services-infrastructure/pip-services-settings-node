@@ -7,18 +7,18 @@ import { PagingParams } from 'pip-services3-commons-node';
 import { DataPage } from 'pip-services3-commons-node';
 import { StringConverter } from 'pip-services3-commons-node';
 
-import { IdentifiableMongoDbPersistence } from 'pip-services3-mongodb-node';
+import { IdentifiableMongoosePersistence } from 'pip-services3-mongoose-node';
 
 import { SettingsSectionV1 } from '../data/version1/SettingsSectionV1';
 import { ISettingsPersistence } from './ISettingsPersistence';
-import { SettingsMongoDbSchema } from './SettingsMongoDbSchema';
+import { SettingsMongooseSchema } from './SettingsMongooseSchema';
 
 export class SettingsMongoDbPersistence 
-    extends IdentifiableMongoDbPersistence<SettingsSectionV1, string> 
+    extends IdentifiableMongoosePersistence<SettingsSectionV1, string> 
     implements ISettingsPersistence {
 
     constructor() {
-        super('settings', SettingsMongoDbSchema());
+        super('settings', SettingsMongooseSchema());
     }
 
     private static mapToPublic(map: any) {

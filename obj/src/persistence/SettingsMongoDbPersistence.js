@@ -4,11 +4,11 @@ let _ = require('lodash');
 let os = require('os');
 const pip_services3_commons_node_1 = require("pip-services3-commons-node");
 const pip_services3_commons_node_2 = require("pip-services3-commons-node");
-const pip_services3_mongodb_node_1 = require("pip-services3-mongodb-node");
-const SettingsMongoDbSchema_1 = require("./SettingsMongoDbSchema");
-class SettingsMongoDbPersistence extends pip_services3_mongodb_node_1.IdentifiableMongoDbPersistence {
+const pip_services3_mongoose_node_1 = require("pip-services3-mongoose-node");
+const SettingsMongooseSchema_1 = require("./SettingsMongooseSchema");
+class SettingsMongoDbPersistence extends pip_services3_mongoose_node_1.IdentifiableMongoosePersistence {
     constructor() {
-        super('settings', SettingsMongoDbSchema_1.SettingsMongoDbSchema());
+        super('settings', SettingsMongooseSchema_1.SettingsMongooseSchema());
     }
     static mapToPublic(map) {
         if (map == null)
