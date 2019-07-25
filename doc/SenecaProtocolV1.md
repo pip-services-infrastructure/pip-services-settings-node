@@ -105,8 +105,8 @@ Modify settings section, perform partial updates and increments
 **Arguments:** 
 - correlation_id: string - (optional) unique id that identifies distributed transaction
 - id: string - unique section id
-- update_params: object - section parameters for partial updates
-- increment_params: object - section parameters for increments
+- update_parameters: object - section parameters for partial updates
+- increment_parameters: object - section parameters for increments
 
 **Returns:**
 - err: Error - occured error or null for success

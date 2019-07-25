@@ -6,4 +6,6 @@ var SettingsFilePersistence_1 = require("./SettingsFilePersistence");
 exports.SettingsFilePersistence = SettingsFilePersistence_1.SettingsFilePersistence;
 var SettingsMongoDbPersistence_1 = require("./SettingsMongoDbPersistence");
 exports.SettingsMongoDbPersistence = SettingsMongoDbPersistence_1.SettingsMongoDbPersistence;
+var SettingsCouchbasePersistence_1 = require("./SettingsCouchbasePersistence");
+exports.SettingsCouchbasePersistence = SettingsCouchbasePersistence_1.SettingsCouchbasePersistence;
 //# sourceMappingURL=index.js.map

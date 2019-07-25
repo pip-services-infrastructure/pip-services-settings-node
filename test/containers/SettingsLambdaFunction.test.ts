@@ -62,10 +62,10 @@ suite('SettingsLambdaFunction', ()=> {
                         role: 'settings',
                         cmd: 'modify_section',
                         id: 'test.2',
-                        update_params: ConfigParams.fromTuples(
+                        update_parameters: ConfigParams.fromTuples(
                             'key1', 'value21'
                         ),
-                        increment_params: ConfigParams.fromTuples(
+                        increment_parameters: ConfigParams.fromTuples(
                             'key2', 1
                         )
                     },

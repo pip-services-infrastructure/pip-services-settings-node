@@ -1,39 +1,42 @@
-let _ = require('lodash');
-let async = require('async');
-let restify = require('restify');
 let assert = require('chai').assert;
+let grpc = require('grpc');
+var protoLoader = require('@grpc/proto-loader');
+let async = require('async');
 
-import { ConfigParams } from 'pip-services3-commons-node';
+let services = require('../../../../src/protos/settings_v1_grpc_pb');
+let messages = require('../../../../src/protos/settings_v1_pb');
+
 import { Descriptor } from 'pip-services3-commons-node';
+import { ConfigParams } from 'pip-services3-commons-node';
 import { References } from 'pip-services3-commons-node';
 
 import { SettingsSectionV1 } from '../../../src/data/version1/SettingsSectionV1';
 import { SettingsMemoryPersistence } from '../../../src/persistence/SettingsMemoryPersistence';
 import { SettingsController } from '../../../src/logic/SettingsController';
-import { SettingsHttpServiceV1 } from '../../../src/services/version1/SettingsHttpServiceV1';
+import { SettingsGrpcServiceV1 } from '../../../src/services/version1/SettingsGrpcServiceV1';
 
-let restConfig = ConfigParams.fromTuples(
+var grpcConfig = ConfigParams.fromTuples(
     "connection.protocol", "http",
     "connection.host", "localhost",
     "connection.port", 3000
 );
 
-suite('SettingsHttpServiceV1', ()=> {
-    let service: SettingsHttpServiceV1;
+suite('SettingsGrpcServiceV1', ()=> {
+    let service: SettingsGrpcServiceV1;
 
-    let rest: any;
+    let client: any;
 
     suiteSetup((done) => {
         let persistence = new SettingsMemoryPersistence();
         let controller = new SettingsController();
 
-        service = new SettingsHttpServiceV1();
-        service.configure(restConfig);
+        service = new SettingsGrpcServiceV1();
+        service.configure(grpcConfig);
 
         let references: References = References.fromTuples(
             new Descriptor('pip-services-settings', 'persistence', 'memory', 'default', '1.0'), persistence,
             new Descriptor('pip-services-settings', 'controller', 'default', 'default', '1.0'), controller,
-            new Descriptor('pip-services-settings', 'service', 'http', 'default', '1.0'), service
+            new Descriptor('pip-services-settings', 'service', 'grpc', 'default', '1.0'), service
         );
         controller.setReferences(references);
         service.setReferences(references);
@@ -46,16 +49,26 @@ suite('SettingsHttpServiceV1', ()=> {
     });
 
     setup(() => {
-        let url = 'http://localhost:3000';
-        rest = restify.createJsonClient({ url: url, version: '*' });
+        let packageDefinition = protoLoader.loadSync(
+            __dirname + "../../../../../src/protos/settings_v1.proto",
+            {
+                keepCase: true,
+                longs: Number,
+                enums: Number,
+                defaults: true,
+                oneofs: true
+            }
+        );
+        let clientProto = grpc.loadPackageDefinition(packageDefinition).settings_v1.Settings;
+
+        client = new clientProto('localhost:3000', grpc.credentials.createInsecure());
     });
 
-   
     test('CRUD Operations', (done) => {
         async.series([
         // Create one section
             (callback) => {
-                rest.post('/v1/settings/set_section',
+                client.set_section(
                     {
                         id: 'test.1',
                         parameters: ConfigParams.fromTuples(
@@ -63,7 +76,10 @@ suite('SettingsHttpServiceV1', ()=> {
                             'key2', 'value12'
                         )
                     },
-                    (err, req, res, parameters) => {
+                    (err, response) => {
+                        err = err || response.error;
+                        let parameters = response ? response.parameters : null;
+
                         assert.isNull(err);
 
                         assert.isObject(parameters);
@@ -75,7 +91,7 @@ suite('SettingsHttpServiceV1', ()=> {
             },
         // Create another section
             (callback) => {
-                rest.post('/v1/settings/modify_section',
+                client.modify_section(
                     {
                         id: 'test.2',
                         update_parameters: ConfigParams.fromTuples(
@@ -85,7 +101,10 @@ suite('SettingsHttpServiceV1', ()=> {
                             'key2', 1
                         )
                     },
-                    (err, req, res, parameters) => {
+                    (err, response) => {
+                        err = err || response.error;
+                        let parameters = response ? response.parameters : null;
+
                         assert.isNull(err);
 
                         assert.isObject(parameters);
@@ -98,11 +117,14 @@ suite('SettingsHttpServiceV1', ()=> {
             },
         // Get second section
             (callback) => {
-                rest.post('/v1/settings/get_section_by_id',
+                client.get_section_by_id(
                     {
                         id: 'test.2'
                     },
-                    (err, req, res, parameters) => {
+                    (err, response) => {
+                        err = err || response.error;
+                        let parameters = response ? response.parameters : null;
+
                         assert.isNull(err);
 
                         assert.isObject(parameters);
@@ -115,9 +137,13 @@ suite('SettingsHttpServiceV1', ()=> {
             },
         // Get all sections
             (callback) => {
-                rest.post('/v1/settings/get_sections',
-                    null,
-                    (err, req, res, page) => {
+                client.get_sections(
+                    {
+                    },
+                    (err, response) => {
+                        err = err || response.error;
+                        let page = response ? response.page : null;
+
                         assert.isNull(err);
 
                         assert.isObject(page);
@@ -129,9 +155,13 @@ suite('SettingsHttpServiceV1', ()=> {
             },
         // Get all section ids
             (callback) => {
-                rest.post('/v1/settings/get_section_ids',
-                    null,
-                    (err, req, res, page) => {
+                client.get_section_ids(
+                    {
+                    },
+                    (err, response) => {
+                        err = err || response.error;
+                        let page = response ? response.page : null;
+
                         assert.isNull(err);
 
                         assert.isObject(page);

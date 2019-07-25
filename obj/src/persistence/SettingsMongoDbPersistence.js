@@ -83,7 +83,7 @@ class SettingsMongoDbPersistence extends pip_services3_mongoose_node_1.Identifia
         return criteria.length > 0 ? { $and: criteria } : {};
     }
     getPageByFilter(correlationId, filter, paging, callback) {
-        super.getPageByFilter(correlationId, this.composeFilter(filter), paging, '-time', null, callback);
+        super.getPageByFilter(correlationId, this.composeFilter(filter), paging, null, null, callback);
     }
     set(correlationId, item, callback) {
         if (item == null) {

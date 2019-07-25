@@ -72,8 +72,8 @@ Modify settings section, perform partial updates and increments
 
 **Request body:**
 - id: string - unique section id
-- update_params: object - section parameters for partial updates
-- increment_params: object - section parameters for increments
+- update_parameters: object - section parameters for partial updates
+- increment_parameters: object - section parameters for increments
 
 **Response body:**
 Updated section parameters

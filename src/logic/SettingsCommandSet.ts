@@ -95,8 +95,8 @@ export class SettingsCommandSet extends CommandSet {
 				.withOptionalProperty('increment_parameters', TypeCode.Map),
             (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
                 let id = args.getAsNullableString("id");
-                let updateParams = ConfigParams.fromValue(args.getAsObject("update_params"));
-                let incrementParams = ConfigParams.fromValue(args.getAsObject("increment_params"));
+                let updateParams = ConfigParams.fromValue(args.getAsObject("update_parameters"));
+                let incrementParams = ConfigParams.fromValue(args.getAsObject("increment_parameters"));
                 this._logic.modifySection(correlationId, id, updateParams, incrementParams, callback);
             }
 		);

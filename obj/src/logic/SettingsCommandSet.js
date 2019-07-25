@@ -60,8 +60,8 @@ class SettingsCommandSet extends pip_services3_commons_node_2.CommandSet {
             .withOptionalProperty('update_parameters', pip_services3_commons_node_7.TypeCode.Map)
             .withOptionalProperty('increment_parameters', pip_services3_commons_node_7.TypeCode.Map), (correlationId, args, callback) => {
             let id = args.getAsNullableString("id");
-            let updateParams = pip_services3_commons_node_1.ConfigParams.fromValue(args.getAsObject("update_params"));
-            let incrementParams = pip_services3_commons_node_1.ConfigParams.fromValue(args.getAsObject("increment_params"));
+            let updateParams = pip_services3_commons_node_1.ConfigParams.fromValue(args.getAsObject("update_parameters"));
+            let incrementParams = pip_services3_commons_node_1.ConfigParams.fromValue(args.getAsObject("increment_parameters"));
             this._logic.modifySection(correlationId, id, updateParams, incrementParams, callback);
         });
     }

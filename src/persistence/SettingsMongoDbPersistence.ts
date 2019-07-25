@@ -109,7 +109,7 @@ export class SettingsMongoDbPersistence
     }
 
     public getPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams, callback: any) {
-        super.getPageByFilter(correlationId, this.composeFilter(filter), paging, '-time', null, callback);
+        super.getPageByFilter(correlationId, this.composeFilter(filter), paging, null, null, callback);
     }
 
     public set(correlationId: string, item: SettingsSectionV1,
