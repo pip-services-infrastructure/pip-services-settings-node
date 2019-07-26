@@ -16,7 +16,7 @@ export class SettingsCouchbasePersistence
     implements ISettingsPersistence {
 
     constructor() {
-        super('settings');
+        super('infrastructure', 'settings');
     }
 
     private static mapToPublic(map: any) {
@@ -66,6 +66,8 @@ export class SettingsCouchbasePersistence
             update_time: value.update_time
         };
 
+        value = super.convertToPublic(value);
+
         return value;
     }    
 
@@ -78,6 +80,8 @@ export class SettingsCouchbasePersistence
             parameters: parameters,
             update_time: value.update_time
         };
+
+        value = super.convertFromPublic(value);
 
         return value;
     }
@@ -142,6 +146,7 @@ export class SettingsCouchbasePersistence
             } 
 
             newItem.update_time = new Date();
+            newItem = this.convertFromPublic(newItem);
 
             let options = result ? { cas: result.cas } : {};
 
@@ -202,6 +207,7 @@ export class SettingsCouchbasePersistence
             } 
 
             newItem.update_time = new Date();
+            newItem = this.convertFromPublic(newItem);
 
             let options = result ? { cas: result.cas } : {};
 

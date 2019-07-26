@@ -51,6 +51,7 @@ class SettingsMongoDbPersistence extends pip_services3_mongoose_node_1.Identifia
             parameters: parameters,
             update_time: value.update_time
         };
+        value = super.convertToPublic(value);
         return value;
     }
     convertFromPublic(value) {
@@ -62,6 +63,7 @@ class SettingsMongoDbPersistence extends pip_services3_mongoose_node_1.Identifia
             parameters: parameters,
             update_time: value.update_time
         };
+        value = super.convertFromPublic(value);
         return value;
     }
     composeFilter(filter) {

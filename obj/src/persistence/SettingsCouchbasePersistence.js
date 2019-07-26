@@ -6,7 +6,7 @@ const pip_services3_commons_node_2 = require("pip-services3-commons-node");
 const pip_services3_couchbase_node_1 = require("pip-services3-couchbase-node");
 class SettingsCouchbasePersistence extends pip_services3_couchbase_node_1.IdentifiableCouchbasePersistence {
     constructor() {
-        super('settings');
+        super('infrastructure', 'settings');
     }
     static mapToPublic(map) {
         if (map == null)
@@ -49,6 +49,7 @@ class SettingsCouchbasePersistence extends pip_services3_couchbase_node_1.Identi
             parameters: parameters,
             update_time: value.update_time
         };
+        value = super.convertToPublic(value);
         return value;
     }
     convertFromPublic(value) {
@@ -60,6 +61,7 @@ class SettingsCouchbasePersistence extends pip_services3_couchbase_node_1.Identi
             parameters: parameters,
             update_time: value.update_time
         };
+        value = super.convertFromPublic(value);
         return value;
     }
     composeFilter(filter) {
@@ -107,6 +109,7 @@ class SettingsCouchbasePersistence extends pip_services3_couchbase_node_1.Identi
                 }
             }
             newItem.update_time = new Date();
+            newItem = this.convertFromPublic(newItem);
             let options = result ? { cas: result.cas } : {};
             this._bucket.upsert(item.id, newItem, options, (err, result) => {
                 if (!err)
@@ -156,6 +159,7 @@ class SettingsCouchbasePersistence extends pip_services3_couchbase_node_1.Identi
                 }
             }
             newItem.update_time = new Date();
+            newItem = this.convertFromPublic(newItem);
             let options = result ? { cas: result.cas } : {};
             this._bucket.upsert(id, newItem, options, (err, result) => {
                 if (!err)

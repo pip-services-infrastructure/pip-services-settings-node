@@ -68,18 +68,22 @@ export class SettingsMongoDbPersistence
             update_time: value.update_time
         };
 
+        value = super.convertToPublic(value);
+
         return value;
     }    
 
     protected convertFromPublic(value: any): any {
         if (value == null) return null;
-        
+
         let parameters = SettingsMongoDbPersistence.mapFromPublic(value.parameters);
         value = {
             _id: value.id,
             parameters: parameters,
             update_time: value.update_time
         };
+
+        value = super.convertFromPublic(value);
 
         return value;
     }
