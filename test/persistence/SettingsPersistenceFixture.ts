@@ -1,7 +1,7 @@
 let async = require('async');
 let assert = require('chai').assert;
 
-import { ConfigParams } from 'pip-services3-commons-node';
+import { ConfigParams, PagingParams } from 'pip-services3-commons-node';
 import { FilterParams } from 'pip-services3-commons-node';
 
 import { SettingsSectionV1 } from '../../src/data/version1/SettingsSectionV1';
@@ -217,5 +217,45 @@ export class SettingsPersistenceFixture {
             }
         ], done);
     }
+
+    public testGetSections(done) {
+        async.series([
+            (callback) => {
+                this._persistence.set(
+                    null,
+                    new SettingsSectionV1(
+                        'test.1',
+                        ConfigParams.fromTuples(
+                            'key1', 'value11',
+                            'key2', 'value12'
+                        )
+                    ),
+                    (err, settings) => {
+                        assert.isNull(err);
+                        
+                        assert.isObject(settings);
+                        assert.equal('test.1', settings.id);
+                        assert.equal('value11', settings.parameters.getAsString('key1'));
+
+                        callback();
+                    }
+                );
+            },
+            (callback) => {
+                this._persistence.getPageByFilter(
+                    null,
+                    new FilterParams(),
+                    new PagingParams(0, 10, true),
+                    (err, page) => {
+                        assert.isNull(err);
+                        
+                        assert.lengthOf(page.data, 1);
+
+                        callback();
+                    }
+                );
+            }
+        ], done)
+    }   
 
 }

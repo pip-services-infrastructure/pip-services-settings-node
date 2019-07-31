@@ -61,4 +61,8 @@ suite('SettingsCouchbasePersistence', ()=> {
     test('Increment parameter', (done) => {
         fixture.testIncrementParameter(done);
     });
+
+    test('Get sections', (done) => {
+        fixture.testGetSections(done);
+    });
 });
