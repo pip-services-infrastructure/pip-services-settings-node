@@ -89,7 +89,8 @@ class SettingsCouchbasePersistence extends pip_services3_couchbase_node_1.Identi
         }
         let parameters = item.parameters.getAsObject();
         parameters = SettingsCouchbasePersistence.mapFromPublic(parameters);
-        this._bucket.getAndLock(item.id, (err, result) => {
+        let objectId = this.generateBucketId(item.id);
+        this._bucket.getAndLock(objectId, (err, result) => {
             // Ignore "Key does not exist on the server" error
             if (err && err.message && err.code == 13)
                 err = null;
@@ -111,7 +112,7 @@ class SettingsCouchbasePersistence extends pip_services3_couchbase_node_1.Identi
             newItem.update_time = new Date();
             newItem = this.convertFromPublic(newItem);
             let options = result ? { cas: result.cas } : {};
-            this._bucket.upsert(item.id, newItem, options, (err, result) => {
+            this._bucket.upsert(objectId, newItem, options, (err, result) => {
                 if (!err)
                     this._logger.trace(correlationId, "Set in %s with id = %s", this._bucketName, item.id);
                 if (callback) {
@@ -127,7 +128,8 @@ class SettingsCouchbasePersistence extends pip_services3_couchbase_node_1.Identi
                 callback(null, null);
             return;
         }
-        this._bucket.getAndLock(id, (err, result) => {
+        let objectId = this.generateBucketId(id);
+        this._bucket.getAndLock(objectId, (err, result) => {
             // Ignore "Key does not exist on the server" error
             if (err && err.message && err.code == 13)
                 err = null;
@@ -161,7 +163,7 @@ class SettingsCouchbasePersistence extends pip_services3_couchbase_node_1.Identi
             newItem.update_time = new Date();
             newItem = this.convertFromPublic(newItem);
             let options = result ? { cas: result.cas } : {};
-            this._bucket.upsert(id, newItem, options, (err, result) => {
+            this._bucket.upsert(objectId, newItem, options, (err, result) => {
                 if (!err)
                     this._logger.trace(correlationId, "Modified in %s with id = %s", this._bucketName, id);
                 if (callback) {

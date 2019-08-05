@@ -121,8 +121,9 @@ export class SettingsCouchbasePersistence
 
         let parameters = item.parameters.getAsObject();
         parameters = SettingsCouchbasePersistence.mapFromPublic(parameters);
+        let objectId = this.generateBucketId(item.id);
 
-        this._bucket.getAndLock(item.id, (err, result) => {
+        this._bucket.getAndLock(objectId, (err, result) => {
             // Ignore "Key does not exist on the server" error
             if (err && err.message && err.code == 13)
                 err = null;
@@ -150,7 +151,7 @@ export class SettingsCouchbasePersistence
 
             let options = result ? { cas: result.cas } : {};
 
-            this._bucket.upsert(item.id, newItem, options, (err, result) => {
+            this._bucket.upsert(objectId, newItem, options, (err, result) => {
                 if (!err)
                     this._logger.trace(correlationId, "Set in %s with id = %s", this._bucketName, item.id);
                
@@ -169,7 +170,9 @@ export class SettingsCouchbasePersistence
             return;
         }
 
-        this._bucket.getAndLock(id, (err, result) => {
+        let objectId = this.generateBucketId(id);
+
+        this._bucket.getAndLock(objectId, (err, result) => {
             // Ignore "Key does not exist on the server" error
             if (err && err.message && err.code == 13)
                 err = null;
@@ -211,7 +214,7 @@ export class SettingsCouchbasePersistence
 
             let options = result ? { cas: result.cas } : {};
 
-            this._bucket.upsert(id, newItem, options, (err, result) => {
+            this._bucket.upsert(objectId, newItem, options, (err, result) => {
                 if (!err)
                     this._logger.trace(correlationId, "Modified in %s with id = %s", this._bucketName, id);
                 
