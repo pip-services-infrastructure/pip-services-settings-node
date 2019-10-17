@@ -70,6 +70,6 @@ class SettingsController {
         });
     }
 }
-SettingsController._defaultConfig = pip_services3_commons_node_1.ConfigParams.fromTuples('dependencies.persistence', 'pip-services-settings:persistence:*:*:1.0');
 exports.SettingsController = SettingsController;
+SettingsController._defaultConfig = pip_services3_commons_node_1.ConfigParams.fromTuples('dependencies.persistence', 'pip-services-settings:persistence:*:*:1.0');
 //# sourceMappingURL=SettingsController.js.map

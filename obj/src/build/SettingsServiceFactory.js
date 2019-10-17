@@ -23,6 +23,7 @@ class SettingsServiceFactory extends pip_services3_components_node_1.Factory {
         this.registerAsType(SettingsServiceFactory.GrpcServiceDescriptor, SettingsGrpcServiceV1_1.SettingsGrpcServiceV1);
     }
 }
+exports.SettingsServiceFactory = SettingsServiceFactory;
 SettingsServiceFactory.Descriptor = new pip_services3_commons_node_1.Descriptor("pip-services-Settings", "factory", "default", "default", "1.0");
 SettingsServiceFactory.MemoryPersistenceDescriptor = new pip_services3_commons_node_1.Descriptor("pip-services-settings", "persistence", "memory", "*", "1.0");
 SettingsServiceFactory.FilePersistenceDescriptor = new pip_services3_commons_node_1.Descriptor("pip-services-settings", "persistence", "file", "*", "1.0");
@@ -32,5 +33,4 @@ SettingsServiceFactory.ControllerDescriptor = new pip_services3_commons_node_1.D
 SettingsServiceFactory.HttpServiceDescriptor = new pip_services3_commons_node_1.Descriptor("pip-services-settings", "service", "http", "*", "1.0");
 SettingsServiceFactory.CommandableGrpcServiceDescriptor = new pip_services3_commons_node_1.Descriptor("pip-services-settings", "service", "commandable-grpc", "*", "1.0");
 SettingsServiceFactory.GrpcServiceDescriptor = new pip_services3_commons_node_1.Descriptor("pip-services-settings", "service", "grpc", "*", "1.0");
-exports.SettingsServiceFactory = SettingsServiceFactory;
 //# sourceMappingURL=SettingsServiceFactory.js.map
