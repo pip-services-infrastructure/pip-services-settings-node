@@ -30,6 +30,10 @@ suite('SettingsMongoDbPersistence', ()=> {
         fixture = new SettingsPersistenceFixture(persistence);
 
         persistence.open(null, (err: any) => {
+            if (err) {
+                done(err);
+                return;
+            }
             persistence.clear(null, (err) => {
                 done(err);
             });
