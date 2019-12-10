@@ -4,11 +4,10 @@ let _ = require('lodash');
 let os = require('os');
 const pip_services3_commons_node_1 = require("pip-services3-commons-node");
 const pip_services3_commons_node_2 = require("pip-services3-commons-node");
-const pip_services3_mongoose_node_1 = require("pip-services3-mongoose-node");
-const SettingsMongooseSchema_1 = require("./SettingsMongooseSchema");
-class SettingsMongoDbPersistence extends pip_services3_mongoose_node_1.IdentifiableMongoosePersistence {
+const pip_services3_mongodb_node_1 = require("pip-services3-mongodb-node");
+class SettingsMongoDbPersistence extends pip_services3_mongodb_node_1.IdentifiableMongoDbPersistence {
     constructor() {
-        super('settings', SettingsMongooseSchema_1.SettingsMongooseSchema());
+        super('settings');
     }
     static mapToPublic(map) {
         if (map == null)
@@ -97,22 +96,28 @@ class SettingsMongoDbPersistence extends pip_services3_mongoose_node_1.Identifia
         parameters = SettingsMongoDbPersistence.mapFromPublic(parameters);
         let partial = {
             $set: {
-                parameters: parameters
-            },
-            update_time: new Date()
+                parameters: parameters,
+                update_time: new Date()
+            }
         };
-        this._model.findOneAndUpdate({ _id: item.id }, partial, { new: true, upsert: true }, (err, newItem) => {
+        this._collection.findOneAndUpdate({ _id: item.id }, partial, { returnOriginal: false, upsert: true }, (err, result) => {
             if (!err)
                 this._logger.trace(correlationId, "Set in %s with id = %s", this._collection, item.id);
             if (callback) {
-                newItem = this.convertToPublic(newItem);
+                let newItem = result ? this.convertToPublic(result.value) : null;
+                // if (err == null || newItem == null) {
+                //     newItem = _.clone(item);
+                //     newItem.update_time = now;
+                // }
                 callback(err, newItem);
             }
         });
     }
     modify(correlationId, id, updateParams, incrementParams, callback) {
         let partial = {
-            update_time: new Date()
+            $set: {
+                update_time: new Date()
+            }
         };
         // Update parameters
         if (updateParams) {
@@ -135,11 +140,11 @@ class SettingsMongoDbPersistence extends pip_services3_mongoose_node_1.Identifia
                 }
             }
         }
-        this._model.findOneAndUpdate({ _id: id }, partial, { new: true, upsert: true }, (err, newItem) => {
+        this._collection.findOneAndUpdate({ _id: id }, partial, { returnOriginal: false, upsert: true }, (err, result) => {
             if (!err)
                 this._logger.trace(correlationId, "Modified in %s by %s", this._collection, id);
             if (callback) {
-                newItem = this.convertToPublic(newItem);
+                let newItem = result ? this.convertToPublic(result.value) : null;
                 callback(err, newItem);
             }
         });

@@ -7,18 +7,17 @@ import { PagingParams } from 'pip-services3-commons-node';
 import { DataPage } from 'pip-services3-commons-node';
 import { StringConverter } from 'pip-services3-commons-node';
 
-import { IdentifiableMongoosePersistence } from 'pip-services3-mongoose-node';
+import { IdentifiableMongoDbPersistence } from 'pip-services3-mongodb-node';
 
 import { SettingsSectionV1 } from '../data/version1/SettingsSectionV1';
 import { ISettingsPersistence } from './ISettingsPersistence';
-import { SettingsMongooseSchema } from './SettingsMongooseSchema';
 
 export class SettingsMongoDbPersistence 
-    extends IdentifiableMongoosePersistence<SettingsSectionV1, string> 
+    extends IdentifiableMongoDbPersistence<SettingsSectionV1, string> 
     implements ISettingsPersistence {
 
     constructor() {
-        super('settings', SettingsMongooseSchema());
+        super('settings');
     }
 
     private static mapToPublic(map: any) {
@@ -129,21 +128,25 @@ export class SettingsMongoDbPersistence
 
         let partial: any = {
            $set: { 
-               parameters: parameters
-           },
-           update_time: new Date()
+               parameters: parameters,
+               update_time: new Date()
+            }
         }
         
-        this._model.findOneAndUpdate(
+        this._collection.findOneAndUpdate(
             { _id: item.id }, 
             partial, 
-            { new: true, upsert: true }, 
-            (err, newItem) => {
+            { returnOriginal: false, upsert: true }, 
+            (err, result) => {
                 if (!err)
                     this._logger.trace(correlationId, "Set in %s with id = %s", this._collection, item.id);
             
                 if (callback) {
-                    newItem = this.convertToPublic(newItem);
+                    let newItem = result ? this.convertToPublic(result.value) : null;
+                    // if (err == null || newItem == null) {
+                    //     newItem = _.clone(item);
+                    //     newItem.update_time = now;
+                    // }
                     callback(err, newItem);
                 }
             }
@@ -154,8 +157,10 @@ export class SettingsMongoDbPersistence
         callback: (err: any, item: SettingsSectionV1) => void): void {
 
         let partial: any = {
-            update_time: new Date()
-        }
+            $set: {
+                update_time: new Date()
+            }
+        }    
 
         // Update parameters
         if (updateParams) {
@@ -180,16 +185,16 @@ export class SettingsMongoDbPersistence
             }
         }
 
-        this._model.findOneAndUpdate(
+        this._collection.findOneAndUpdate(
             { _id: id }, 
             partial, 
-            { new: true, upsert: true }, 
-            (err, newItem) => {
+            { returnOriginal: false, upsert: true }, 
+            (err, result) => {
                 if (!err)
                     this._logger.trace(correlationId, "Modified in %s by %s", this._collection, id);
             
                 if (callback) {
-                    newItem = this.convertToPublic(newItem);
+                    let newItem = result ? this.convertToPublic(result.value) : null;
                     callback(err, newItem);
                 }
             }

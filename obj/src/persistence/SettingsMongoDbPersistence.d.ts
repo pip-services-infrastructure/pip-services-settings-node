@@ -1,10 +1,10 @@
 import { ConfigParams } from 'pip-services3-commons-node';
 import { FilterParams } from 'pip-services3-commons-node';
 import { PagingParams } from 'pip-services3-commons-node';
-import { IdentifiableMongoosePersistence } from 'pip-services3-mongoose-node';
+import { IdentifiableMongoDbPersistence } from 'pip-services3-mongodb-node';
 import { SettingsSectionV1 } from '../data/version1/SettingsSectionV1';
 import { ISettingsPersistence } from './ISettingsPersistence';
-export declare class SettingsMongoDbPersistence extends IdentifiableMongoosePersistence<SettingsSectionV1, string> implements ISettingsPersistence {
+export declare class SettingsMongoDbPersistence extends IdentifiableMongoDbPersistence<SettingsSectionV1, string> implements ISettingsPersistence {
     constructor();
     private static mapToPublic;
     private static fieldFromPublic;

@@ -1,6 +1,6 @@
 {
     "name": "pip-services-settings-node",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "author": "Conceptual Vision Consulting LLC",
     "description": "Settings microservice in Node.js",
     "contributors": [
@@ -45,7 +45,7 @@
         "pip-services3-aws-node": "^3.0.0",
         "pip-services3-rpc-node": "^3.0.0",
         "pip-services3-grpc-node": "^3.0.0",
-        "pip-services3-mongoose-node": "^3.0.0"
+        "pip-services3-mongodb-node": "^3.0.0"
     },
     "devDependencies": {
         "google-protobuf": "^3.7.1",
